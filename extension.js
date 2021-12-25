@@ -226,18 +226,19 @@ function onExtensionLocationChanged (settings, key) {
 	}
 }
 
+let IDLE_MSG = "Lets Get Coding"
 //Spotify uses MIPRIS v2, and as such the metadata fields are prefixed by 'xesam'
 //We use this info to set our limits,and assume the data is properly escaped within quotes.
 function parseSpotifyData(data) {
 	if(!data)
-		return createGreeting()
+		return IDLE_MSG;
 
 	const titleIndex = data.indexOf("xesam:title");
 	const artistIndex = data.indexOf("xesam:artist");
 
 	// If no title or artist entry, don't show anything (maybe createGretting?)
 	if (titleIndex == -1 && artistIndex == -1)
-		return '';
+		return IDLE_MSG;
 
     var title, artist;
 
@@ -333,51 +334,4 @@ function getPlayer() {
 		if (players[windowName])
 			return players[windowName];
 	}
-}
-
-let genres = ["DnB", "Synthwave", "Dubstep", "Pop", "House", "Hardstyle", "Rock", "8-bit", "Classical", "Electro"]
-let currentGenre = genres[Math.floor(Math.random() * genres.length)];
-let genreChanged = false;
-
-function createGreeting() {
-	if (!this.settings.get_boolean('friendly-greeting'))
-		return ""
-
-	var current_hour = new Date().getHours();
-
-	if(new Date().getMinutes() % 5 == 0 && !genreChanged) {
-		currentGenre = genres[Math.floor(Math.random() * genres.length)];
-		genreChanged = true;
-	}
-	else if(new Date().getMinutes() % 5 != 0)
-		genreChanged = false;
-
-	if (current_hour < 4)
-		return "A bit of late night coding and " + currentGenre + " music?";
-
-	else if (current_hour < 7)
-		return "You're up early, get at 'em!"
-
-	else if (current_hour < 10)
-		return "Start the day properly with some " + currentGenre + " music?";
-
-	else if (current_hour < 12)
-		return "What's todays soundtrack? A bit of " + currentGenre + "?";
-
-	else if (current_hour == 12)
-		return "" + currentGenre + " music and bit of lunch?";
-
-	else if (current_hour < 15)
-		return "Is that " + currentGenre + " music on the radio? Let's go!";
-
-	else if (current_hour < 18)
-		return "Isn't work progressing nicely with some " + currentGenre + " music?";
-
-	else if (current_hour < 21)
-		return "Free time and " + currentGenre + "? Name a better duo.";
-
-	else
-		return "Can " + currentGenre + " be considered a lullaby? Sure!"
-
-
 }
