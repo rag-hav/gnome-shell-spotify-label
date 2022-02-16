@@ -299,6 +299,7 @@ of O(n^2) of checking if the window is in the players array. The Object should m
 command.
 */
 const players = {
+    'Google-chrome': 'chrome',
 	amarok: 'amarok',			// not sure if works
 	vvave: 'vvave',				// not sure if works
 	elisa: 'elisa',
