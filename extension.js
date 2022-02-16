@@ -237,14 +237,24 @@ function parseSpotifyData(data) {
 	const artistIndex = data.indexOf("xesam:artist");
 
 	// If no title or artist entry, don't show anything (maybe createGretting?)
-	if (titleIndex == -1 || artistIndex == -1)
+	if (titleIndex == -1 && artistIndex == -1)
 		return IDLE_MSG;
 
-	var titleBlock = data.substring(titleIndex);
-	var title = titleBlock.split("\"")[2]
+    var title, artist;
 
-	var artistBlock = data.substring(artistIndex);
-	var artist = artistBlock.split("\"")[2]
+    if (titleIndex != -1) {
+        var titleBlock = data.substring(titleIndex);
+        title = titleBlock.split("\"")[2]
+    } else {
+        title = '';
+    }
+
+    if (artistIndex != -1) {
+        var artistBlock = data.substring(artistIndex);
+        artist = artistBlock.split("\"")[2];
+    } else {
+        artist = '';
+    }
 
 	//If the delimited '-' is in the title, we assume that it's remix, and encapsulate the end in brackets.
 	if(title.includes("-"))
@@ -259,6 +269,10 @@ function parseSpotifyData(data) {
 
 	if (title.includes("xesam") || artist.includes("xesam"))
 		return "Loading..."
+
+
+	if (titleIndex == -1 || artistIndex == -1)
+    	return (artist + title);
 
 	if (this.settings.get_boolean('artist-first')) {
     	return (artist + " - " + title);
